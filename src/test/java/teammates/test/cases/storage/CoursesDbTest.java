@@ -78,7 +78,7 @@ public class CoursesDbTest extends BaseComponentTestCase {
             coursesDb.createEntity(invalidTimezoneCourse);
             signalFailureToDetectException();
         } catch (InvalidParametersException e) {
-            AssertHelper.assertContains("not acceptable to TEAMMATES as the course time zone.",
+            AssertHelper.assertContains("not acceptable to TEAMMATES as a/an course time zone",
                                          e.getMessage());
         }
 
@@ -142,7 +142,7 @@ public class CoursesDbTest extends BaseComponentTestCase {
                                         e.getMessage());
             AssertHelper.assertContains("not acceptable to TEAMMATES as a/an course name because it is empty",
                                         e.getMessage());
-            AssertHelper.assertContains("not acceptable to TEAMMATES as the course time zone.",
+            AssertHelper.assertContains("not acceptable to TEAMMATES as a/an course time zone",
                                         e.getMessage());
         }
         
