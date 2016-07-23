@@ -389,7 +389,13 @@ public class FeedbackQuestionsDb extends EntitiesDb {
         if (question.questionNumber <= 0) {
             question.questionNumber = questions.size() + 1;
         }
-        adjustQuestionNumbersInSession(question, oldQuestionNumber, questions);
+        
+        int numberAdjustmentRangeStart = oldQuestionNumber <= 0 ? questions.size() + 1
+                                                                : oldQuestionNumber;
+        // remove question getting edited
+        FeedbackQuestionAttributes.removeQuestionWithIdInQuestions(question.getId(), questions);
+        adjustQuestionNumbers(numberAdjustmentRangeStart, question.questionNumber, questions);
+        
         FeedbackQuestionAttributes questionSaved;
         if (isUpdating) {
             questionSaved = updateFeedbackQuestion(question);
@@ -402,18 +408,4 @@ public class FeedbackQuestionsDb extends EntitiesDb {
         return questionSaved;
     }
 
-    private void adjustQuestionNumbersInSession(FeedbackQuestionAttributes question, int oldQuestionNumber,
-            List<FeedbackQuestionAttributes> questions) {
-        int numberAdjustmentRangeStart = oldQuestionNumber <= 0 ? questions.size() + 1
-                                                                : oldQuestionNumber;
-        // remove question getting edited
-        for (Iterator<FeedbackQuestionAttributes> iter = questions.iterator();
-                iter.hasNext();) {
-            FeedbackQuestionAttributes questionForAdjustment = iter.next();
-            if (questionForAdjustment.getId().equals(question.getId())) {
-                iter.remove();
-            }
-        }
-        adjustQuestionNumbers(numberAdjustmentRangeStart, question.questionNumber, questions);
-    }
 }
